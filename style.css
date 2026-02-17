@@ -1,0 +1,255 @@
+ /* Paleta de cores otimizada para Dark Mode de alto contraste */
+        :root {
+            --primary-color: #4dabf7;  /* Azul um pouco mais claro para destacar no dark */
+            --bg-dark: #0f111a;        /* Fundo ultra escuro */
+            --bg-secondary: #1a1d29;   /* Cards e seções alternadas */
+            --bg-tertiary: #24283b;    /* Inputs e hover */
+            --text-main: #f8f9fa;      /* Branco quase puro para leitura */
+            --text-secondary: #ced4da; /* Cinza claro para descrições */
+            --text-dim: #9499b7;       /* Cinza azulado para detalhes menos importantes */
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-main);
+            background-color: var(--bg-dark);
+            scroll-behavior: smooth;
+        }
+
+        /* Navbar com transparência e desfoque */
+        .navbar {
+            background-color: rgba(15, 17, 26, 0.9);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--white) !important;
+            letter-spacing: 1px;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--text-secondary) !important;
+            margin: 0 10px;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(15, 17, 26, 0.85), rgba(15, 17, 26, 0.95)), 
+                        url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Seções */
+        section {
+            padding: 100px 0;
+        }
+
+        .bg-light-custom {
+            background-color: var(--bg-secondary) !important;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            font-weight: 700;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .section-title::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-color);
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        /* Texto de conteúdo */
+        p.lead-text {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Cards de Projetos */
+        .project-card {
+            background-color: var(--bg-tertiary);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 100%;
+        }
+
+        .project-card:hover {
+            transform: translateY(-12px);
+            border-color: var(--primary-color);
+            box-shadow: 0 15px 40px rgba(77, 171, 247, 0.2);
+        }
+
+        .project-img {
+            height: 220px;
+            object-fit: cover;
+            filter: brightness(0.7);
+            transition: filter 0.3s ease;
+        }
+
+        .project-card:hover .project-img {
+            filter: brightness(1);
+        }
+
+        .card-title {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .card-text {
+            color: var(--text-dim);
+        }
+
+        /* Timeline do Currículo */
+        .resume-item {
+            padding: 25px;
+            border-left: 4px solid var(--primary-color);
+            background: var(--bg-tertiary);
+            margin-bottom: 25px;
+            border-radius: 0 8px 8px 0;
+            transition: background 0.3s;
+        }
+
+        .resume-item:hover {
+            background: #2d324d;
+        }
+
+        .resume-item h5 {
+            color: var(--white);
+            margin-bottom: 5px;
+        }
+
+        .resume-item .date-info {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .resume-item .desc {
+            color: var(--text-secondary);
+        }
+
+        /* Botões */
+        .btn-primary {
+            background-color: var(--primary-color);
+            border: none;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #339af0;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(77, 171, 247, 0.4);
+        }
+
+        .btn-outline-light {
+            color: var(--text-main);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        /* Formulários */
+        .form-control {
+            background-color: var(--bg-dark);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--white);
+            padding: 12px;
+        }
+
+        .form-control::placeholder {
+            color: rgba(194, 194, 194, 0.219);
+        }
+
+        .form-control:focus {
+            background-color: var(--bg-dark);
+            border-color: var(--primary-color);
+            color: var(--white);
+            box-shadow: 0 0 0 0.25rem rgba(77, 171, 247, 0.1);
+        }
+
+        .form-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #05060a;
+            color: var(--text-dim);
+            padding: 60px 0;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .social-icons a {
+            color: var(--text-secondary);
+            font-size: 1.8rem;
+            margin: 0 20px;
+            transition: all 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--primary-color);
+            transform: translateY(-5px);
+        }
+
+        /* Badge Custom */
+        .badge-skill {
+            background-color: rgba(77, 171, 247, 0.1);
+            color: var(--primary-color);
+            border: 1px solid rgba(77, 171, 247, 0.3);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            section { padding: 60px 0; }
+        }
