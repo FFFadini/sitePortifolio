@@ -18,6 +18,14 @@ const projects = [
         tag2: "JavaScript"
     },
     {
+        title: "Projeto jogo Clone Snake",
+        description: "Projeto criado no mesmo padrão do Clone Asteroid com Html, JavaScript, CSS e Bootstrap 5. Focado em uma grande utilizaçao do Bootstrap e Css",
+        image: "img/img5.png",
+        link: "https://fffadini.github.io/Clone-Snake/",
+        tag: "HTML",
+        tag2: "JavaScript"
+    },
+    {
         title: "Desenvolvimento de site",
         description: "Site criado para divulgar trabalho, com foco em um design simples e versátil",
         image: "img/img4.png",
