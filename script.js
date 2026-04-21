@@ -128,3 +128,51 @@ window.addEventListener('DOMContentLoaded', () => {
     renderProjects();
     setupUI();
 });
+
+/* ----------------------------------------------------------
+   7. CONTACT FORM — envio via AJAX (não sai da página)
+---------------------------------------------------------- */
+const form = document.getElementById('contactForm');
+if (form) {
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const btn = form.querySelector('.btn-submit');
+        const original = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Enviando...';
+
+        fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json' }
+        })
+        .then(res => {
+            if (res.ok) {
+                btn.innerHTML = '<i class="fas fa-check"></i> Mensagem enviada!';
+                btn.style.background = 'var(--secondary)';
+                btn.style.color = '#fff';
+                form.reset();
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = original;
+                    btn.style.background = '';
+                    btn.style.color = '';
+                }, 3500);
+            } else {
+                throw new Error();
+            }
+        })
+        .catch(() => {
+            btn.innerHTML = '<i class="fas fa-times"></i> Erro ao enviar. Tente novamente.';
+            btn.style.background = '#c0392b';
+            btn.style.color = '#fff';
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerHTML = original;
+                btn.style.background = '';
+                btn.style.color = '';
+            }, 3500);
+        });
+    });
+}
