@@ -6,40 +6,36 @@ const projects = [
         description: "Projeto criado com Html, JavaScript, CSS e Bootstrap 5. Focado em uma grande utilizaçao do Bootstrap e Css",
         image: "img/img2.png",
         link: "https://fffadini.github.io/asteroids-clone/",
-        tag: "HTML",
-        tag2: "JavaScript"
+        tags: ["HTML", "JavaScript", "CSS"]
     },
     {
         title: "Projeto jogo Clone Tetris",
         description: "Projeto criado no mesmo padrão do Clone Asteroid com Html, JavaScript, CSS e Bootstrap 5. Focado em uma grande utilizaçao do Bootstrap e Css",
         image: "img/img3.png",
         link: "https://fffadini.github.io/Clone-Tetris/",
-        tag: "HTML",
-        tag2: "JavaScript"
+        tags: ["HTML", "JavaScript", "CSS"]
     },
     {
         title: "Projeto jogo Clone Snake",
         description: "Projeto criado no mesmo padrão do Clone Asteroid com Html, JavaScript, CSS e Bootstrap 5. Focado em uma grande utilizaçao do Bootstrap e Css",
         image: "img/img5.png",
         link: "https://fffadini.github.io/Clone-Snake/",
-        tag: "HTML",
-        tag2: "JavaScript"
+        tags: ["HTML", "JavaScript", "CSS"]
     },
     {
         title: "Desenvolvimento de site",
         description: "Site criado para divulgar trabalho, com foco em um design simples e versátil",
         image: "img/img4.png",
         link: "https://fisiokathkoike.netlify.app/",
-        tag: "HTML",
-        tag2: "JavaScript"
+        tags: ["HTML", "CSS", "JavaScript", "UX/UI"]
     }
 ];
 
-// 2. Funções de Renderização
+// Funções de Renderização
 function renderSkills() {
     const container = document.getElementById('skill-tags');
     if (!container) return;
-    container.innerHTML = skills.map(skill => 
+    container.innerHTML = skills.map(skill =>
         `<span class="badge-skill">${skill}</span>`
     ).join('');
 }
@@ -47,13 +43,16 @@ function renderSkills() {
 function renderProjects() {
     const container = document.getElementById('projects-container');
     if (!container) return;
-    container.innerHTML = projects.map(proj => `
-        <div class="col-md-4">
+    container.innerHTML = projects.map((proj, index) => `
+        <div class="col-md-4 reveal reveal-delay-${(index % 3) + 1}">
             <div class="project-card">
                 <img src="${proj.image}" class="project-img w-100" alt="${proj.title}">
                 <div class="p-4">
-                    <span class="badge bg-primary bg-opacity-10 text-primary mb-2" style="font-size: 0.75rem">${proj.tag}</span>
-                    <span class="badge bg-primary bg-opacity-10 text-primary mb-2" style="font-size: 0.75rem">${proj.tag2}</span>
+                    <div class="d-flex flex-wrap gap-1 mb-2">
+                        ${proj.tags.map(tag => `
+                            <span class="badge bg-primary bg-opacity-10 text-primary" style="font-size: 0.75rem">${tag}</span>
+                        `).join('')}
+                    </div>
                     <h5 class="card-title">${proj.title}</h5>
                     <p class="card-text small mb-4">${proj.description}</p>
                     <a href="${proj.link}" class="btn btn-sm btn-outline-primary w-100" target="_blank">Ver mais</a>
@@ -63,52 +62,9 @@ function renderProjects() {
     `).join('');
 }
 
-// 3. Gerenciamento de Contato
+// Gerenciamento de UI (scroll suave + formulário — listener único)
 function setupUI() {
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const btn = this.querySelector('button');
-            const formUrl = this.action;
-
-            const text = btn.innerText;
-            btn.disabled = true;
-            btn.innerText = "Enviando...";
-
-            // Coleta os dados do formulário
-            const formData = new FormData(this);
-
-            try {
-                const response = await fetch(formUrl, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    btn.innerText = "Mensagem Enviada!";
-                    btn.className = "btn btn-success px-5 py-3";
-                    this.reset();
-                    setTimeout(() => {
-                        btn.innerText = text;
-                        btn.className = "btn btn-primary px-5 py-3";
-                        btn.disabled = false;
-                    }, 3000);
-                } else {
-                    throw new Error("Erro no envio");
-                }
-            } catch (error) {
-                alert("Ocorreu um erro ao enviar sua mensagem. Tente novamente.");
-                btn.innerText = text;
-                btn.disabled = false;
-            }
-        });
-    }
-
+    // Scroll suave
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const id = this.getAttribute('href');
@@ -121,58 +77,96 @@ function setupUI() {
             }
         });
     });
+
+    // Formulário de contato — listener único aqui
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const btn = this.querySelector('button[type="submit"]');
+            const originalText = btn.innerText;
+            const originalClass = btn.className;
+
+            btn.disabled = true;
+            btn.innerText = "Enviando...";
+
+            try {
+                const response = await fetch(this.action, {
+                    method: 'POST',
+                    body: new FormData(this),
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (response.ok) {
+                    btn.innerText = "Mensagem Enviada!";
+                    btn.className = "btn btn-success px-5 py-3";
+                    this.reset();
+                    setTimeout(() => {
+                        btn.innerText = originalText;
+                        btn.className = originalClass;
+                        btn.disabled = false;
+                    }, 3500);
+                } else {
+                    throw new Error("Erro no envio");
+                }
+            } catch (error) {
+                btn.innerText = "Erro ao enviar. Tente novamente.";
+                btn.className = "btn btn-danger px-5 py-3";
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.className = originalClass;
+                    btn.disabled = false;
+                }, 3500);
+            }
+        });
+    }
 }
 
 window.addEventListener('DOMContentLoaded', () => {
     renderSkills();
     renderProjects();
     setupUI();
+    setupScrollReveal();
 });
 
-/* ----------------------------------------------------------
-   7. CONTACT FORM — envio via AJAX (não sai da página)
----------------------------------------------------------- */
-const form = document.getElementById('contactForm');
-if (form) {
-    form.addEventListener('submit', function (e) {
-        e.preventDefault();
+/* =============================================
+   SCROLL REVEAL — IntersectionObserver
+=============================================== */
+function setupScrollReveal() {
+    const revealClasses = ['.reveal', '.reveal-left', '.reveal-right'];
 
-        const btn = form.querySelector('.btn-submit');
-        const original = btn.innerHTML;
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Enviando...';
+    // Aguarda os cards de projeto serem renderizados antes de observar
+    const allElements = () => document.querySelectorAll(revealClasses.join(', '));
 
-        fetch(form.action, {
-            method: 'POST',
-            body: new FormData(form),
-            headers: { 'Accept': 'application/json' }
-        })
-        .then(res => {
-            if (res.ok) {
-                btn.innerHTML = '<i class="fas fa-check"></i> Mensagem enviada!';
-                btn.style.background = 'var(--secondary)';
-                btn.style.color = '#fff';
-                form.reset();
-                setTimeout(() => {
-                    btn.disabled = false;
-                    btn.innerHTML = original;
-                    btn.style.background = '';
-                    btn.style.color = '';
-                }, 3500);
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                entry.target.classList.remove('hidden');
             } else {
-                throw new Error();
+                // Fade out apenas se o elemento já foi visto (evita piscar no load)
+                if (entry.target.classList.contains('visible')) {
+                    entry.target.classList.remove('visible');
+                    entry.target.classList.add('hidden');
+                }
             }
-        })
-        .catch(() => {
-            btn.innerHTML = '<i class="fas fa-times"></i> Erro ao enviar. Tente novamente.';
-            btn.style.background = '#c0392b';
-            btn.style.color = '#fff';
-            setTimeout(() => {
-                btn.disabled = false;
-                btn.innerHTML = original;
-                btn.style.background = '';
-                btn.style.color = '';
-            }, 3500);
         });
+    }, {
+        threshold: 0.12,       // dispara quando 12% do elemento está visível
+        rootMargin: '0px 0px -40px 0px'  // margem inferior para antecipar levemente
     });
+
+    // Observa elementos existentes no DOM
+    allElements().forEach(el => observer.observe(el));
+
+    // Observa cards de projeto após renderização dinâmica
+    const projectsContainer = document.getElementById('projects-container');
+    if (projectsContainer) {
+        new MutationObserver(() => {
+            projectsContainer.querySelectorAll(revealClasses.join(', ')).forEach(el => {
+                observer.observe(el);
+            });
+        }).observe(projectsContainer, { childList: true });
+    }
 }
