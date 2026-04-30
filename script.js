@@ -64,7 +64,9 @@ function renderProjects() {
 
 // Gerenciamento de UI (scroll suave + formulário — listener único)
 function setupUI() {
-    // Scroll suave
+    const navbar = document.getElementById('mainNav');
+
+    // Scroll suave com offset da navbar fixa
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const id = this.getAttribute('href');
@@ -72,13 +74,44 @@ function setupUI() {
                 const target = document.querySelector(id);
                 if (target) {
                     e.preventDefault();
-                    target.scrollIntoView({ behavior: 'smooth' });
+
+                    // Fecha o menu mobile se estiver aberto
+                    const navCollapse = document.querySelector('.navbar-collapse');
+                    if (navCollapse && navCollapse.classList.contains('show')) {
+                        bootstrap.Collapse.getInstance(navCollapse)?.hide();
+                    }
+
+                    const navHeight = navbar ? navbar.offsetHeight : 70;
+                    const top = target.getBoundingClientRect().top + window.scrollY - navHeight;
+                    window.scrollTo({ top, behavior: 'smooth' });
                 }
             }
         });
     });
 
-    // Formulário de contato — listener único aqui
+    // Highlight do link ativo ao rolar
+    const sections = document.querySelectorAll('section[id], header[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    window.addEventListener('scroll', () => {
+        const navHeight = navbar ? navbar.offsetHeight : 70;
+        let current = '';
+
+        sections.forEach(section => {
+            if (window.scrollY >= section.offsetTop - navHeight - 10) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    }, { passive: true });
+
+    // Formulário de contato
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
         contactForm.addEventListener('submit', async function (e) {
@@ -125,9 +158,9 @@ function setupUI() {
 
 window.addEventListener('DOMContentLoaded', () => {
     renderSkills();
-    renderProjects();
+    renderProjects();   // renderiza os cards primeiro
     setupUI();
-    setupScrollReveal();
+    setupScrollReveal(); // observa depois que os cards já estão no DOM
 });
 
 /* =============================================
@@ -135,9 +168,7 @@ window.addEventListener('DOMContentLoaded', () => {
 =============================================== */
 function setupScrollReveal() {
     const revealClasses = ['.reveal', '.reveal-left', '.reveal-right'];
-
-    // Aguarda os cards de projeto serem renderizados antes de observar
-    const allElements = () => document.querySelectorAll(revealClasses.join(', '));
+    const elements = document.querySelectorAll(revealClasses.join(', '));
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -145,7 +176,6 @@ function setupScrollReveal() {
                 entry.target.classList.add('visible');
                 entry.target.classList.remove('hidden');
             } else {
-                // Fade out apenas se o elemento já foi visto (evita piscar no load)
                 if (entry.target.classList.contains('visible')) {
                     entry.target.classList.remove('visible');
                     entry.target.classList.add('hidden');
@@ -153,20 +183,9 @@ function setupScrollReveal() {
             }
         });
     }, {
-        threshold: 0.12,       // dispara quando 12% do elemento está visível
-        rootMargin: '0px 0px -40px 0px'  // margem inferior para antecipar levemente
+        threshold: 0.12,
+        rootMargin: '0px 0px -40px 0px'
     });
 
-    // Observa elementos existentes no DOM
-    allElements().forEach(el => observer.observe(el));
-
-    // Observa cards de projeto após renderização dinâmica
-    const projectsContainer = document.getElementById('projects-container');
-    if (projectsContainer) {
-        new MutationObserver(() => {
-            projectsContainer.querySelectorAll(revealClasses.join(', ')).forEach(el => {
-                observer.observe(el);
-            });
-        }).observe(projectsContainer, { childList: true });
-    }
+    elements.forEach(el => observer.observe(el));
 }
