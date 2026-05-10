@@ -416,22 +416,66 @@ footer {
     }
 }
 
+/* ==========================================================================
+   SOLUÇÃO DEFINITIVA ANTI-ZOOM E ANTI-VAZAMENTO (MOBILE)
+   ========================================================================== */
+
+/* 1. Trava absoluta na largura da tela */
 html, body {
-    overflow-x: hidden; /* Corta qualquer coisa que vaze para os lados */
-    width: 100%;        /* Garante que o corpo do site não passe da tela */
+    width: 100vw;
+    max-width: 100%;
+    overflow-x: hidden !important;
     position: relative;
+    margin: 0;
+    padding-top: 70px; /* Mantém o espaçamento da sua navbar */
+    box-sizing: border-box;
 }
 
-/* Garante que as seções segurem os elementos das animações */
-section, header {
+/* 2. Zera as margens negativas do Bootstrap que costumam bugar o mobile */
+.container, .container-fluid {
+    max-width: 100%;
     overflow-x: hidden;
 }
 
-/* (Opcional) Ajuste para o texto do Hero não ficar tão espremido em telas muito finas */
-@media (max-width: 480px) {
+.row {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+/* 3. Força a quebra de textos longos (ex: "Felipe Fernandes Fadini") */
+h1, h2, h3, p, span {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    /* 4. Reduz a distância da animação no celular para não empurrar a tela */
+    .reveal-left {
+        transform: translateX(-15px) !important;
+    }
+    .reveal-right {
+        transform: translateX(15px) !important;
+    }
+    
+    /* Estado oculto da animação ajustado para o mobile */
+    .reveal-left.hidden { transform: translateX(-15px) !important; }
+    .reveal-right.hidden { transform: translateX(15px) !important; }
+
+    /* 5. Ajuste rigoroso de fonte e padding no Hero */
     .hero h1 {
-        font-size: 1.9rem;
-        line-height: 1.3;
+        font-size: 2rem !important; /* Força uma fonte menor que caiba na tela */
         padding: 0 10px;
+    }
+    
+    .hero p {
+        font-size: 1.1rem !important;
+        padding: 0 15px;
+    }
+
+    /* 6. Garante que os formulários e cards não extrapolem o limite */
+    .card.contact-card {
+        padding: 20px 15px !important;
+        width: 100%;
     }
 }
