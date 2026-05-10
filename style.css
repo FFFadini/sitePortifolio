@@ -332,150 +332,134 @@ footer {
 .reveal-right.hidden { opacity: 0; transform: translateX(50px); }
 
 
-/* ==========================================================================
-   PORTABILIDADE E RESPONSIVIDADE PARA DISPOSITIVOS MÓVEIS
-   ========================================================================== */
+/* =========================================
+   CONFIGURAÇÃO GLOBAL RESPONSIVA
+========================================= */
+:root {
+    /* Desktop */
+    --section-padding: 100px;
+    --hero-title-size: clamp(2.5rem, 8vw, 4.5rem);
+    --hero-subtitle-size: 1.25rem;
+    --project-image-height: 220px;
+    --about-image-size: 350px;
+    --card-padding: 1.5rem;
+    --container-padding: 1rem;
+}
 
-/* Telas médias (Tablets em pé e celulares grandes) */
+/* Tablet */
 @media (max-width: 991px) {
-    .hero p {
-        font-size: 1.1rem !important; /* Ajusta o subtítulo para não quebrar feio */
+    :root {
+        --section-padding: 80px;
+        --hero-subtitle-size: 1.1rem;
+        --project-image-height: 200px;
+        --about-image-size: 280px;
     }
-    
+
     .navbar-collapse {
         background-color: var(--bg-tertiary);
         padding: 1rem;
-        border-radius: 8px;
+        border-radius: 12px;
         margin-top: 10px;
     }
 }
 
-/* Telas pequenas (Smartphones convencionais) */
+/* Mobile */
 @media (max-width: 768px) {
-    section {
-        padding: 60px 0;
+    :root {
+        --section-padding: 60px;
+        --hero-title-size: clamp(2rem, 7vw, 2.8rem);
+        --hero-subtitle-size: 1rem;
+        --project-image-height: 180px;
+        --about-image-size: 230px;
+        --card-padding: 1rem;
+        --container-padding: 1.2rem;
     }
 
-    .section-title {
-        font-size: 1.8rem;
-        margin-bottom: 40px;
-    }
-    
-    .section-title::after {
-        bottom: -10px;
+    .hero-buttons .btn {
+        width: 100%;
+        margin-bottom: 12px !important;
     }
 
-    .about-img {
-        max-width: 250px;
-        margin-bottom: 20px;
-    }
-    
-    .hero h1 {
-        font-size: 2.2rem;
-    }
-
-    /* Ajuste da timeline (currículo) para mobile */
     .resume-item {
         border-left: none;
         border-top: 4px solid var(--primary-color);
         border-radius: 0 0 8px 8px;
-        padding: 20px 15px;
-        margin-bottom: 20px;
-    }
-    
-    .resume-item h5 {
-        font-size: 1.1rem;
+        padding: 18px;
     }
 }
 
-/* Telas extra pequenas (Smartphones estreitos) */
+/* Celulares pequenos */
 @media (max-width: 480px) {
-    .hero h1 {
-        font-size: 1.8rem;
-    }
-
-    /* Empilha botões no Hero */
-    .hero-buttons .btn {
-        display: block;
-        width: 100%;
-        margin: 0 0 10px 0 !important;
-    }
-
-    /* Força botões 100% no mobile */
-    .w-100-mobile {
-        width: 100%;
-    }
-
-    .social-icons a {
-        font-size: 1.5rem;
-        margin: 0 15px;
-    }
-    
-    .project-img {
-        height: 180px;
+    :root {
+        --hero-title-size: clamp(1.6rem, 6vw, 2rem);
+        --project-image-height: 160px;
+        --about-image-size: 200px;
     }
 }
 
-/* ==========================================================================
-   SOLUÇÃO DEFINITIVA ANTI-ZOOM E ANTI-VAZAMENTO (MOBILE)
-   ========================================================================== */
+/* =========================================
+   APLICAÇÃO DAS VARIÁVEIS
+========================================= */
 
-/* 1. Trava absoluta na largura da tela */
-html, body {
-    width: 100vw;
-    max-width: 100%;
-    overflow-x: hidden !important;
-    position: relative;
-    margin: 0;
-    padding-top: 70px; /* Mantém o espaçamento da sua navbar */
+html {
+    overflow-x: hidden;
     box-sizing: border-box;
 }
 
-/* 2. Zera as margens negativas do Bootstrap que costumam bugar o mobile */
-.container, .container-fluid {
-    max-width: 100%;
+body {
     overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    padding-top: 70px;
 }
 
-.row {
-    margin-right: 0 !important;
-    margin-left: 0 !important;
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
 }
 
-/* 3. Força a quebra de textos longos (ex: "Felipe Fernandes Fadini") */
-h1, h2, h3, p, span {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+section {
+    padding: var(--section-padding) 0;
+}
+
+.container {
+    padding-left: var(--container-padding);
+    padding-right: var(--container-padding);
+}
+
+.hero h1 {
+    font-size: var(--hero-title-size);
+    padding-inline: 10px;
+}
+
+.hero p {
+    font-size: var(--hero-subtitle-size);
+    padding-inline: 15px;
+}
+
+.project-img {
+    height: var(--project-image-height);
+    object-fit: cover;
+}
+
+.about-img {
+    max-width: var(--about-image-size);
+    width: 100%;
+    height: auto;
+}
+
+.contact-card,
+.project-card {
+    padding: var(--card-padding);
+    width: 100%;
+}
+
+img {
     max-width: 100%;
+    height: auto;
 }
 
-@media (max-width: 768px) {
-    /* 4. Reduz a distância da animação no celular para não empurrar a tela */
-    .reveal-left {
-        transform: translateX(-15px) !important;
-    }
-    .reveal-right {
-        transform: translateX(15px) !important;
-    }
-    
-    /* Estado oculto da animação ajustado para o mobile */
-    .reveal-left.hidden { transform: translateX(-15px) !important; }
-    .reveal-right.hidden { transform: translateX(15px) !important; }
-
-    /* 5. Ajuste rigoroso de fonte e padding no Hero */
-    .hero h1 {
-        font-size: 2rem !important; /* Força uma fonte menor que caiba na tela */
-        padding: 0 10px;
-    }
-    
-    .hero p {
-        font-size: 1.1rem !important;
-        padding: 0 15px;
-    }
-
-    /* 6. Garante que os formulários e cards não extrapolem o limite */
-    .card.contact-card {
-        padding: 20px 15px !important;
-        width: 100%;
-    }
+h1, h2, h3, p, span {
+    overflow-wrap: break-word;
 }
