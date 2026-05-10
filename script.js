@@ -133,7 +133,7 @@ function setupUI() {
 
                 if (response.ok) {
                     btn.innerText = "Mensagem Enviada!";
-                    btn.className = "btn btn-success px-5 py-3";
+                    btn.className = "btn btn-success px-5 py-3 w-100-mobile";
                     this.reset();
                     setTimeout(() => {
                         btn.innerText = originalText;
@@ -145,7 +145,7 @@ function setupUI() {
                 }
             } catch (error) {
                 btn.innerText = "Erro ao enviar. Tente novamente.";
-                btn.className = "btn btn-danger px-5 py-3";
+                btn.className = "btn btn-danger px-5 py-3 w-100-mobile";
                 setTimeout(() => {
                     btn.innerText = originalText;
                     btn.className = originalClass;
