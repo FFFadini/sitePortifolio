@@ -28,6 +28,13 @@ const projects = [
         image: "img/img4.png",
         link: "https://fisiokathkoike.netlify.app/",
         tags: ["HTML", "CSS", "JavaScript", "UX/UI"]
+    },
+    {
+        title: "Trabalho de landing page",
+        description: "Uma serviço frilance feito para a criaçao de uma landing page para mostrar os servicios do cliente e seus produtos para venda",
+        image: "img/img6.png",
+        link: "https://fsbbambiental.com.br/",
+        tags: ["HTML", "CSS", "JavaScript", "PHP", "UX/UI"]
     }
 ];
 
@@ -158,14 +165,11 @@ function setupUI() {
 
 window.addEventListener('DOMContentLoaded', () => {
     renderSkills();
-    renderProjects();   // renderiza os cards primeiro
+    renderProjects(); 
     setupUI();
-    setupScrollReveal(); // observa depois que os cards já estão no DOM
+    setupScrollReveal();
 });
 
-/* =============================================
-   SCROLL REVEAL — IntersectionObserver
-=============================================== */
 function setupScrollReveal() {
     const revealClasses = ['.reveal', '.reveal-left', '.reveal-right'];
     const elements = document.querySelectorAll(revealClasses.join(', '));
