@@ -35,6 +35,13 @@ const projects = [
         image: "img/img6.png",
         link: "https://fsbbambiental.com.br/",
         tags: ["HTML", "CSS", "JavaScript", "PHP", "UX/UI"]
+    },
+    {
+        title: "Jogo Idle Survivor",
+        description: "Projeto de faculdade de um jogo de sobrevivência, feito com Python e Pygame, para demonstrar Paradigmas de programação e POO, com foco em uma grande utilizaçao do Python e Pygame",
+        image: "img/img7.png",
+        link: "https://fffadini.github.io/IdleSuvivor/",
+        tags: ["Python", "Pygame", "POO"]
     }
 ];
 
